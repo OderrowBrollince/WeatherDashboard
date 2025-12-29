@@ -1,16 +1,41 @@
-# React + Vite
+# WeatherDash ☁️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, feature-rich weather dashboard application built with React and Tailwind CSS. WeatherDash provides real-time weather information, 5-day forecasts, air quality monitoring, and customizable settings in a beautiful, responsive interface.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🌤️ Dashboard
 
-## React Compiler
+- **Current Weather Display** - Large weather card with temperature, conditions, and weather icon
+- **Temperature Unit Toggle** - Switch between Celsius and Fahrenheit
+- **Hourly Forecast** - View weather predictions for the next 24 hours
+- **Today's Highlights** - Key metrics including:
+  - Humidity with dew point
+  - Wind speed and direction
+  - UV Index with visual indicator
+  - Visibility range
+  - Atmospheric pressure
+- **Loading & Error States** - Skeleton loaders and error handling UI
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 📅 5-Day Forecast
 
-## Expanding the ESLint configuration
+- **Interactive Forecast Cards** - Click to view detailed daily forecasts
+- **Hourly Temperature Chart** - SVG-based interactive chart with gradient fill
+- **Weather Details** - Wind speed, humidity, and UV index for selected day
+- **Precipitation Indicators** - Color-coded rain probability
+- **Sidebar Navigation** - Quick access to saved cities
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### ⚙️ Settings & Air Quality
+
+- **General Preferences**
+  - Temperature & wind unit selection (Metric/Imperial)
+  - Theme switcher (Dark/Light/System)
+- **Saved Locations Management**
+  - Add, remove, and reorder favorite cities
+  - Drag-and-drop interface
+- **Air Quality Index (AQI)**
+  - Animated circular gauge with real-time AQI value
+  - Color-coded status (Good/Moderate/Unhealthy/Hazardous)
+  - Major pollutants breakdown (PM2.5, PM10, O₃, NO₂, SO₂, CO)
+  - Health recommendations based on air quality
+- **Interactive Map Preview** - View AQI heatmap
