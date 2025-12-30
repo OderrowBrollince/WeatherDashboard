@@ -1,13 +1,57 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>my-react-app</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherDash - Current Weather</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#13a4ec",
+            "background-light": "#f6f7f8",
+            "background-dark": "#111c22",
+            "surface-dark": "#1e293b",
+            "surface-light": "#ffffff",
+            "surface-highlight": "#233342",
+            "card-dark": "#1C2A33",
+            "input-dark": "#233c48",
+            "text-secondary": "#92b7c9",
+          },
+          fontFamily: {
+            "display": ["Space Grotesk", "sans-serif"],
+            "body": ["Noto Sans", "sans-serif"]
+          },
+          backgroundImage: {
+            'weather-gradient': 'radial-gradient(circle at 50% 0%, rgba(19, 164, 236, 0.15) 0%, rgba(16, 28, 34, 0) 70%)',
+          }
+        },
+      },
+    }
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
