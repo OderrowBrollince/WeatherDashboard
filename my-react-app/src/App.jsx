@@ -6,7 +6,7 @@ import Forecast from './pages/Forecast';
 import Settings from './pages/Settings';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'forecast', 'settings'
+  const [currentPage, setCurrentPage] = useState('dashboard');
 
   // Render Dashboard page
   if (currentPage === 'dashboard') {
