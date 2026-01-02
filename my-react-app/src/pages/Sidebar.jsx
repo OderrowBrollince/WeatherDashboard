@@ -1,8 +1,8 @@
 export default function Sidebar({ activePage = 'home' }) {
   const savedCities = [
-    { name: 'San Francisco', isActive: true },
-    { name: 'New York', isActive: false },
-    { name: 'Tokyo', isActive: false }
+    { name: 'Nairobi', isActive: true },
+    { name: 'Lagos', isActive: false },
+    { name: 'Cape Town', isActive: false }
   ];
 
   return (

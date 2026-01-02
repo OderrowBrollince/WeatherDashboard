@@ -29,7 +29,7 @@ export default function Dashboard() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>
           <h2 className="text-4xl font-bold text-white mb-1 flex items-center gap-3">
-            London, GB
+            Nairobi, Kenya
             <span className="material-symbols-outlined text-primary fill-1">near_me</span>
           </h2>
           <p className="text-[#92b7c9] text-lg font-medium">Wednesday, 14 Oct • 10:23 AM</p>

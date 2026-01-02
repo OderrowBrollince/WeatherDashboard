@@ -1,6 +1,6 @@
 import Sidebar from './Sidebar';
 
-export default function ForecastLayout({ children, city = 'San Francisco, CA', dateRange = 'Oct 24 - Oct 29' }) {
+export default function ForecastLayout({ children, city = 'Nairobi, Kenya', dateRange = 'Oct 24 - Oct 29' }) {
   return (
     <div className="flex h-screen w-full">
       <Sidebar />
