@@ -1,4 +1,4 @@
-// Transform OpenWeatherMap current weather data to your component format
+// Transform OpenWeatherMap current weather data component format
 export const transformCurrentWeather = (data) => {
   return {
     temp: Math.round(data.main.temp),
@@ -10,14 +10,15 @@ export const transformCurrentWeather = (data) => {
     icon: mapWeatherIcon(data.weather[0].icon),
     humidity: data.main.humidity,
     pressure: data.main.pressure,
-    visibility: (data.visibility / 1000).toFixed(1), // Convert to km
+    visibility: (data.visibility / 1000).toFixed(1),
     windSpeed: data.wind.speed,
     windDirection: data.wind.deg,
-    uvIndex: null, // UV index requires separate API call
+    uvIndex: null,
     sunrise: new Date(data.sys.sunrise * 1000),
     sunset: new Date(data.sys.sunset * 1000),
     city: data.name,
     country: data.sys.country,
+    timezone: data.timezone || 0, // Timezone offset in seconds from UTC
     coordinates: {
       lat: data.coord.lat,
       lon: data.coord.lon,

@@ -1,13 +1,24 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CurrentWeather from '../components/CurrentWeather';
 import HourlyForecast from '../components/HourlyForecast';
 import HighlightCard from '../components/HighlightCard';
 import LoadingState from '../components/LoadingState';
 import ErrorState from '../components/ErrorState';
 import { useWeather } from '../context/WeatherContext';
+import { getFormattedDateTime, formatTimeInTimezone } from '../utils/timezoneHelpers';
 
 export default function Dashboard() {
   const { weatherData, hourlyData, loading, error, currentLocation } = useWeather();
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Update time every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Calculate highlights from weatherData
   const highlights = useMemo(() => {
@@ -61,6 +72,25 @@ export default function Dashboard() {
     ];
   }, [weatherData]);
 
+  // Get formatted date and time based on city's timezone
+  const { dateStr, timeStr } = useMemo(() => {
+    if (!weatherData || !weatherData.timezone) {
+      const now = new Date();
+      return {
+        dateStr: now.toLocaleDateString('en-US', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'short',
+        }),
+        timeStr: now.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+        }),
+      };
+    }
+    return getFormattedDateTime(weatherData.timezone);
+  }, [weatherData, currentTime]); // Recalculate when time updates
+
   if (loading && !weatherData) {
     return (
       <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
@@ -81,20 +111,18 @@ export default function Dashboard() {
     return null;
   }
 
-  const currentDate = new Date();
-  const dateStr = currentDate.toLocaleDateString('en-US', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'short',
-  });
-  const timeStr = currentDate.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-
   const location = currentLocation 
     ? `${currentLocation.name}, ${currentLocation.country}`
     : 'Loading...';
+
+  // Format sunrise/sunset times in city's timezone
+  const sunriseTime = weatherData.timezone 
+    ? formatTimeInTimezone(weatherData.sunrise, weatherData.timezone)
+    : weatherData.sunrise.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  
+  const sunsetTime = weatherData.timezone
+    ? formatTimeInTimezone(weatherData.sunset, weatherData.timezone)
+    : weatherData.sunset.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 
   return (
     <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
@@ -111,12 +139,12 @@ export default function Dashboard() {
         <div className="flex items-center gap-2 bg-[#233c48]/50 px-4 py-2 rounded-full border border-[#233c48]">
           <span className="material-symbols-outlined text-yellow-400 text-sm">sunny</span>
           <span className="text-sm font-medium text-white">
-            Sunrise {weatherData.sunrise.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+            Sunrise {sunriseTime}
           </span>
           <span className="w-1 h-1 rounded-full bg-[#92b7c9]"></span>
           <span className="material-symbols-outlined text-orange-400 text-sm">bedtime</span>
           <span className="text-sm font-medium text-white">
-            Sunset {weatherData.sunset.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+            Sunset {sunsetTime}
           </span>
         </div>
       </div>
