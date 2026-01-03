@@ -1,9 +1,27 @@
+import { useWeather } from '../context/WeatherContext';
+import { useSavedLocations } from '../hooks/useSavedLocations';
+
 export default function Sidebar({ activePage = 'home' }) {
-  const savedCities = [
-    { name: 'Nairobi', isActive: true },
-    { name: 'Lagos', isActive: false },
-    { name: 'Cape Town', isActive: false }
-  ];
+  const { currentLocation, setLocation } = useWeather();
+  const { savedLocations, removeLocation } = useSavedLocations();
+
+  const handleLocationClick = (location) => {
+    setLocation(location.name, location.country);
+  };
+
+  const handleRemoveLocation = (e, locationId) => {
+    e.stopPropagation(); // Prevent triggering the location click
+    removeLocation(locationId);
+  };
+
+  // Check if a location is currently active
+  const isLocationActive = (location) => {
+    if (!currentLocation) return false;
+    return (
+      currentLocation.name.toLowerCase() === location.name.toLowerCase() &&
+      currentLocation.country === location.country
+    );
+  };
 
   return (
     <aside className="hidden md:flex w-64 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111c22] h-full flex-shrink-0">
@@ -30,41 +48,57 @@ export default function Sidebar({ activePage = 'home' }) {
             </a>
 
             {/* Saved Cities Section */}
-            <div className="px-3 pt-4 pb-2">
+            <div className="px-3 pt-4 pb-2 flex items-center justify-between">
               <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Saved Cities</p>
             </div>
 
-            {savedCities.map((city, index) => (
-              <a
-                key={index}
-                className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-colors group ${
-                  city.isActive
-                    ? 'bg-primary/10 border border-primary/20'
-                    : 'hover:bg-slate-100 dark:hover:bg-surface-highlight'
-                }`}
-                href="#"
-              >
-                <span
-                  className={`material-symbols-outlined ${
-                    city.isActive
-                      ? 'text-primary'
-                      : 'text-slate-500 dark:text-slate-400 group-hover:text-primary'
-                  }`}
-                  style={city.isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
-                >
-                  location_on
-                </span>
-                <span
-                  className={`font-medium ${
-                    city.isActive
-                      ? 'text-slate-900 dark:text-white'
-                      : 'text-slate-600 dark:text-slate-300 group-hover:text-primary'
-                  }`}
-                >
-                  {city.name}
-                </span>
-              </a>
-            ))}
+            {savedLocations.length === 0 ? (
+              <div className="px-3 py-2">
+                <p className="text-xs text-slate-500 dark:text-slate-400">No saved locations</p>
+              </div>
+            ) : (
+              savedLocations.map((location) => {
+                const isActive = isLocationActive(location);
+                return (
+                  <div
+                    key={location.id}
+                    className={`relative flex items-center gap-3 px-3 py-3 rounded-lg transition-colors group cursor-pointer ${
+                      isActive
+                        ? 'bg-primary/10 border border-primary/20'
+                        : 'hover:bg-slate-100 dark:hover:bg-surface-highlight'
+                    }`}
+                    onClick={() => handleLocationClick(location)}
+                  >
+                    <span
+                      className={`material-symbols-outlined ${
+                        isActive
+                          ? 'text-primary'
+                          : 'text-slate-500 dark:text-slate-400 group-hover:text-primary'
+                      }`}
+                      style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
+                    >
+                      location_on
+                    </span>
+                    <span
+                      className={`font-medium flex-1 ${
+                        isActive
+                          ? 'text-slate-900 dark:text-white'
+                          : 'text-slate-600 dark:text-slate-300 group-hover:text-primary'
+                      }`}
+                    >
+                      {location.name}
+                    </span>
+                    <button
+                      onClick={(e) => handleRemoveLocation(e, location.id)}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-500/10 text-slate-400 hover:text-red-500"
+                      title="Remove location"
+                    >
+                      <span className="material-symbols-outlined text-sm">close</span>
+                    </button>
+                  </div>
+                );
+              })
+            )}
           </nav>
         </div>
 
