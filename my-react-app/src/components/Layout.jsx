@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import SearchBar from './SearchBar';
+import { useWeather } from '../context/WeatherContext';
 
 export default function Layout({ children, currentPage, setCurrentPage }) {
   const [isDark, setIsDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { setLocationByCoords } = useWeather();
+  const [isLocating, setIsLocating] = useState(false);
 
   const toggleTheme = () => {
     setIsDark(!isDark);
@@ -13,6 +16,50 @@ export default function Layout({ children, currentPage, setCurrentPage }) {
   const handleNavigation = (page) => {
     setCurrentPage(page);
     setIsMobileMenuOpen(false); // Close mobile menu after navigation
+  };
+
+  // Handle getting user's current location
+  const handleGetCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    setIsLocating(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocationByCoords(latitude, longitude);
+        setIsLocating(false);
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+        setIsLocating(false);
+        
+        let errorMessage = 'Unable to get your location. ';
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage += 'Please allow location access in your browser settings.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage += 'Location information is unavailable.';
+            break;
+          case error.TIMEOUT:
+            errorMessage += 'Location request timed out.';
+            break;
+          default:
+            errorMessage += 'An unknown error occurred.';
+            break;
+        }
+        alert(errorMessage);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
   };
 
   return (
@@ -41,9 +88,15 @@ export default function Layout({ children, currentPage, setCurrentPage }) {
               <div className="hidden md:flex items-center gap-3">
                 <button
                   aria-label="Locate Me"
-                  className="flex items-center justify-center size-10 rounded-lg bg-[#233c48] hover:bg-[#2d4a58] hover:text-primary transition-colors text-white"
+                  onClick={handleGetCurrentLocation}
+                  disabled={isLocating}
+                  className="flex items-center justify-center size-10 rounded-lg bg-[#233c48] hover:bg-[#2d4a58] hover:text-primary transition-colors text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span className="material-symbols-outlined">my_location</span>
+                  {isLocating ? (
+                    <span className="material-symbols-outlined animate-spin">sync</span>
+                  ) : (
+                    <span className="material-symbols-outlined">my_location</span>
+                  )}
                 </button>
                 <button
                   aria-label="Toggle Theme"
@@ -149,11 +202,22 @@ export default function Layout({ children, currentPage, setCurrentPage }) {
                     Settings
                   </button>
                   <button
+                    onClick={handleGetCurrentLocation}
+                    disabled={isLocating}
                     aria-label="Locate Me"
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-left bg-[#233c48] hover:bg-[#2d4a58] text-white transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-left bg-[#233c48] hover:bg-[#2d4a58] text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <span className="material-symbols-outlined">my_location</span>
-                    Locate Me
+                    {isLocating ? (
+                      <>
+                        <span className="material-symbols-outlined animate-spin">sync</span>
+                        <span>Locating...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined">my_location</span>
+                        <span>Locate Me</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </div>

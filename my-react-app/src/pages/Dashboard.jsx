@@ -8,8 +8,9 @@ import { useWeather } from '../context/WeatherContext';
 import { getFormattedDateTime, formatTimeInTimezone } from '../utils/timezoneHelpers';
 
 export default function Dashboard() {
-  const { weatherData, hourlyData, loading, error, currentLocation } = useWeather();
+  const { weatherData, hourlyData, loading, error, currentLocation, setLocationByCoords } = useWeather();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isLocating, setIsLocating] = useState(false);
 
   // Update time every second
   useEffect(() => {
@@ -19,6 +20,50 @@ export default function Dashboard() {
 
     return () => clearInterval(interval);
   }, []);
+
+  // Handle getting user's current location
+  const handleGetCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    setIsLocating(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocationByCoords(latitude, longitude);
+        setIsLocating(false);
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+        setIsLocating(false);
+        
+        let errorMessage = 'Unable to get your location. ';
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage += 'Please allow location access in your browser settings.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage += 'Location information is unavailable.';
+            break;
+          case error.TIMEOUT:
+            errorMessage += 'Location request timed out.';
+            break;
+          default:
+            errorMessage += 'An unknown error occurred.';
+            break;
+        }
+        alert(errorMessage);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
+  };
 
   // Calculate highlights from weatherData
   const highlights = useMemo(() => {
@@ -89,7 +134,7 @@ export default function Dashboard() {
       };
     }
     return getFormattedDateTime(weatherData.timezone);
-  }, [weatherData, currentTime]); // Recalculate when time updates
+  }, [weatherData, currentTime]);
 
   if (loading && !weatherData) {
     return (
@@ -130,7 +175,19 @@ export default function Dashboard() {
         <div>
           <h2 className="text-4xl font-bold text-white mb-1 flex items-center gap-3">
             {location}
-            <span className="material-symbols-outlined text-primary fill-1">near_me</span>
+            <button
+              onClick={handleGetCurrentLocation}
+              disabled={isLocating || loading}
+              className="flex items-center justify-center text-primary hover:text-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Get my current location"
+              aria-label="Get my current location"
+            >
+              {isLocating ? (
+                <span className="material-symbols-outlined animate-spin">sync</span>
+              ) : (
+                <span className="material-symbols-outlined fill-1">near_me</span>
+              )}
+            </button>
           </h2>
           <p className="text-[#92b7c9] text-lg font-medium">
             {dateStr} • {timeStr}

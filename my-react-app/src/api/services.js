@@ -84,6 +84,8 @@ export const weatherService = {
       throw error;
     }
   },
+
+  
 };
 
 // Geocoding API calls

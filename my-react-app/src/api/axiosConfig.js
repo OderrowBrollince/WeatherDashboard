@@ -10,6 +10,16 @@ const weatherApi = axios.create({
   },
 });
 
+// One Call API instance (for UV Index and detailed forecasts)
+const oneCallApi = axios.create({
+  baseURL: 'https://api.openweathermap.org/data/2.5',
+  timeout: 10000,
+  params: {
+    appid: import.meta.env.VITE_OPENWEATHER_API_KEY,
+    units: 'metric',
+  },
+});
+
 // Geocoding API instance (for location search)
 const geocodingApi = axios.create({
   baseURL: 'https://api.openweathermap.org/geo/1.0',
@@ -55,4 +65,4 @@ api.interceptors.response.use(
 );
 
 export default api;
-export { weatherApi, geocodingApi };
+export { weatherApi, geocodingApi, oneCallApi };
