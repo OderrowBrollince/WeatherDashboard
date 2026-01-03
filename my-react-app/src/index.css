@@ -6,11 +6,11 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #101c22;
+  background: #090f13;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #233c48;
+  background: #090d0f;
   border-radius: 4px;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .shimmer {
-  background: linear-gradient(90deg, #1e293b 25%, #2d3f52 50%, #1e293b 75%);
+  background: linear-gradient(90deg, #1e293b 25%, #18212b 50%, #1e293b 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }

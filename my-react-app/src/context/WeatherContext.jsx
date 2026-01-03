@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { weatherService, geocodingService } from '../api/services';
-import { transformCurrentWeather, transformHourlyForecast, transformForecast } from '../utils/weatherHelpers';
+import { transformCurrentWeather, transformHourlyForecast, transformForecast, transformAirQuality } from '../utils/weatherHelpers';
 
 const WeatherContext = createContext();
 
@@ -17,6 +17,7 @@ export const WeatherProvider = ({ children }) => {
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [hourlyData, setHourlyData] = useState([]);
+  const [airQualityData, setAirQualityData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -42,15 +43,28 @@ export const WeatherProvider = ({ children }) => {
       const transformedHourly = transformHourlyForecast(forecast);
       const transformedForecast = transformForecast(forecast);
 
+      const coordinates = transformedCurrent.coordinates;
+
+      // Fetch air quality data using coordinates
+      let airQuality = null;
+      try {
+        const airPollution = await weatherService.getAirPollution(coordinates.lat, coordinates.lon);
+        airQuality = transformAirQuality(airPollution);
+      } catch (aqError) {
+        console.error('Error fetching air quality:', aqError);
+        // Air quality is optional, don't fail the whole request
+      }
+
       setCurrentLocation({
         name: transformedCurrent.city,
         country: transformedCurrent.country,
-        coordinates: transformedCurrent.coordinates,
+        coordinates: coordinates,
       });
 
       setWeatherData(transformedCurrent);
       setForecastData(transformedForecast);
       setHourlyData(transformedHourly);
+      setAirQualityData(airQuality);
     } catch (err) {
       console.error('Error fetching weather:', err);
       setError(err.response?.data?.message || 'Failed to fetch weather data');
@@ -79,6 +93,15 @@ export const WeatherProvider = ({ children }) => {
       const transformedHourly = transformHourlyForecast(forecast);
       const transformedForecast = transformForecast(forecast);
 
+      // Fetch air quality data
+      let airQuality = null;
+      try {
+        const airPollution = await weatherService.getAirPollution(lat, lon);
+        airQuality = transformAirQuality(airPollution);
+      } catch (aqError) {
+        console.error('Error fetching air quality:', aqError);
+      }
+
       setCurrentLocation({
         name: locationName,
         country: countryCode,
@@ -88,6 +111,7 @@ export const WeatherProvider = ({ children }) => {
       setWeatherData(transformedCurrent);
       setForecastData(transformedForecast);
       setHourlyData(transformedHourly);
+      setAirQualityData(airQuality);
     } catch (err) {
       console.error('Error fetching weather by coordinates:', err);
       setError(err.response?.data?.message || 'Failed to fetch weather data');
@@ -101,6 +125,7 @@ export const WeatherProvider = ({ children }) => {
     weatherData,
     forecastData,
     hourlyData,
+    airQualityData,
     loading,
     error,
     setLocation,
