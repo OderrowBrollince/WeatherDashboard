@@ -272,8 +272,8 @@ export default function Settings() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
                   <div>
-                    <p className="text-white font-bold">View AQI Map</p>
-                    <p className="text-white/70 text-xs">Real-time global heatmap</p>
+                    <p className="text-white font-bold">View Map</p>
+                    <p className="text-white/70 text-xs">Real-time global map</p>
                   </div>
                   <span className="material-symbols-outlined text-white">arrow_forward</span>
                 </div>

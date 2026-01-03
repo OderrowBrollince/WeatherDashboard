@@ -1,4 +1,5 @@
 // Transform OpenWeatherMap current weather data component format
+// In weatherHelpers.js - The transformCurrentWeather function should be:
 export const transformCurrentWeather = (data) => {
   return {
     temp: Math.round(data.main.temp),
@@ -14,8 +15,9 @@ export const transformCurrentWeather = (data) => {
     windSpeed: data.wind.speed,
     windDirection: data.wind.deg,
     uvIndex: null,
-    sunrise: new Date(data.sys.sunrise * 1000),
-    sunset: new Date(data.sys.sunset * 1000),
+    // Sunrise and sunset are Unix timestamps (UTC), convert to Date objects
+    sunrise: new Date(data.sys.sunrise * 1000), // Multiply by 1000 to convert seconds to milliseconds
+    sunset: new Date(data.sys.sunset * 1000),   // Multiply by 1000 to convert seconds to milliseconds
     city: data.name,
     country: data.sys.country,
     timezone: data.timezone || 0, // Timezone offset in seconds from UTC

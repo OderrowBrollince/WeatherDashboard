@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import Sidebar from './Sidebar';
 import { useWeather } from '../context/WeatherContext';
 
-export default function ForecastLayout({ children }) {
+export default function ForecastLayout({ children, setCurrentPage }) {
   const { currentLocation, forecastData } = useWeather();
 
   // Calculate date range from forecast data
@@ -22,7 +22,7 @@ export default function ForecastLayout({ children }) {
 
   return (
     <div className="flex h-screen w-full">
-      <Sidebar />
+      <Sidebar setCurrentPage={setCurrentPage} />
 
       <main className="flex-1 flex flex-col h-full overflow-y-auto bg-background-light dark:bg-background-dark relative">
         <header className="sticky top-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 px-6 py-6 md:px-10">
@@ -38,7 +38,6 @@ export default function ForecastLayout({ children }) {
                 </div>
               )}
             </div>
-            {/* ... rest of your header code ... */}
           </div>
         </header>
 

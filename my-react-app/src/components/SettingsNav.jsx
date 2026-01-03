@@ -14,7 +14,7 @@ export default function SettingsNav({ activePage = 'settings' }) {
           <div
             className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20"
             style={{
-              backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuDnajVo2tdHHs_z7bBYd4OX_Nisq6e6q640Sz7wnaJGjheWo1-nGFY7c-Bvi2WKGF-Pf9Zsb8390NVZQK2amL1iq12VrlkhEKnWPTiu-SHPiJFrvxY1utXYX9B_Pd20Z3RIJHfnduPjeoOatqNI6POKnj3iTrTGxDXFespyPhfSR3V5Xv0tH_9o1cmBQERJUW8PwaLOiG1ttBnFBfoBAG3NQzuOpvA0LOPMSwsdzajm3LVgZI5KZZoZnp2UHOfNNzFTuegwO1zLLX0")`
+              backgroundImage: `url("")`
             }}
           ></div>
           <div className="flex flex-col">

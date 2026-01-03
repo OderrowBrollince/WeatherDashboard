@@ -22,63 +22,37 @@ export const getFormattedDateTime = (timezoneOffset) => {
     weekday: 'long',
     day: 'numeric',
     month: 'short',
-    timeZone: 'UTC', // We'll handle timezone manually
   });
   
-  // Format date manually to respect timezone
-  const dateOptions = { 
-    weekday: 'long', 
-    day: 'numeric', 
-    month: 'short' 
-  };
-  const timeOptions = { 
-    hour: 'numeric', 
+  const timeStr = localTime.toLocaleTimeString('en-US', {
+    hour: 'numeric',
     minute: '2-digit',
-    hour12: true 
-  };
-  
-  // Use Intl.DateTimeFormat to properly format with timezone
-  const dateFormatter = new Intl.DateTimeFormat('en-US', {
-    ...dateOptions,
-    timeZone: 'UTC',
+    hour12: true,
   });
   
-  // For timezone-aware formatting, we need to calculate manually
-  const hours = localTime.getUTCHours() + (timezoneOffset / 3600);
-  const minutes = localTime.getUTCMinutes();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const displayHours = hours % 12 || 12;
-  const timeStr = `${displayHours}:${String(minutes).padStart(2, '0')} ${ampm}`;
-  
-  // Better approach: use toLocaleString with calculated offset
-  const utcDate = new Date(localTime.getTime() - (timezoneOffset * 1000));
-  const adjustedDate = new Date(utcDate.getTime() + (timezoneOffset * 1000));
-  
-  return {
-    dateStr: adjustedDate.toLocaleDateString('en-US', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'short',
-    }),
-    timeStr: adjustedDate.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    }),
-    date: adjustedDate,
-  };
+  return { dateStr, timeStr, date: localTime };
 };
 
 /**
  * Format time for sunrise/sunset in specific timezone
- * @param {Date} date - Date object (sunrise/sunset)
+ * @param {Date} date - Date object (sunrise/sunset) - already in UTC
  * @param {number} timezoneOffset - Timezone offset in seconds from UTC
  * @returns {string} Formatted time string
  */
 export const formatTimeInTimezone = (date, timezoneOffset) => {
-  // Convert the date to the city's timezone
+  if (!date || !(date instanceof Date)) {
+    return 'N/A';
+  }
+  
+  // The date is already a Date object created from UTC timestamp
+  // We need to convert it to the city's local time
+  // Get the UTC time in milliseconds
   const utcTime = date.getTime();
+  
+  // Convert to local time by adding the timezone offset
+  // timezoneOffset is in seconds, so multiply by 1000 to get milliseconds
   const localTime = new Date(utcTime + (timezoneOffset * 1000));
+  
   return localTime.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',

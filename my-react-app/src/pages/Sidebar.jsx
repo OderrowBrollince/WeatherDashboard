@@ -1,7 +1,7 @@
 import { useWeather } from '../context/WeatherContext';
 import { useSavedLocations } from '../hooks/useSavedLocations';
 
-export default function Sidebar({ activePage = 'home' }) {
+export default function Sidebar({ activePage = 'home', setCurrentPage }) {
   const { currentLocation, setLocation } = useWeather();
   const { savedLocations, removeLocation } = useSavedLocations();
 
@@ -12,6 +12,12 @@ export default function Sidebar({ activePage = 'home' }) {
   const handleRemoveLocation = (e, locationId) => {
     e.stopPropagation(); // Prevent triggering the location click
     removeLocation(locationId);
+  };
+
+  const handleHomeClick = () => {
+    if (setCurrentPage) {
+      setCurrentPage('dashboard');
+    }
   };
 
   // Check if a location is currently active
@@ -35,9 +41,9 @@ export default function Sidebar({ activePage = 'home' }) {
 
           {/* Navigation */}
           <nav className="flex flex-col gap-2">
-            <a
-              className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-slate-100 dark:hover:bg-surface-highlight transition-colors group"
-              href="#"
+            <button
+              onClick={handleHomeClick}
+              className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-slate-100 dark:hover:bg-surface-highlight transition-colors group text-left w-full"
             >
               <span className="material-symbols-outlined text-slate-500 dark:text-slate-400 group-hover:text-primary transition-colors">
                 home
@@ -45,7 +51,7 @@ export default function Sidebar({ activePage = 'home' }) {
               <span className="text-slate-600 dark:text-slate-300 font-medium group-hover:text-primary transition-colors">
                 Home Dashboard
               </span>
-            </a>
+            </button>
 
             {/* Saved Cities Section */}
             <div className="px-3 pt-4 pb-2 flex items-center justify-between">
@@ -108,7 +114,7 @@ export default function Sidebar({ activePage = 'home' }) {
             JD
           </div>
           <div className="flex flex-col">
-            <p className="text-sm font-medium dark:text-white">John Doe</p>
+            <p className="text-sm font-medium dark:text-white">Oderrow Odero</p>
             <p className="text-xs text-slate-500 dark:text-slate-400">Pro Member</p>
           </div>
         </div>
