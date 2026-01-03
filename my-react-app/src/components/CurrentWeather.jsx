@@ -12,7 +12,7 @@ export default function CurrentWeather({ data }) {
       <div
         className="absolute inset-0 opacity-20 bg-cover bg-center z-0"
         style={{
-          backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuC1goRRVY6DKhiNl74BElp7UNEY6LiN0UxV6587AqS9XsvfGn3bl7n4HPWPb1hYS764T_4IA8UU6ntoobcyvk7XZT_SVk0TJ2bAf_xGViJH-ggV5Irv9HA9kk5H4MPIv8lkQ5MM09_-ANnW2OTT8QkCVMJPwlr-rqXYZT6Md86tuM5AJzRaE76ZMtJietxhcyq_Yp6dhkhX40hsOzxymCfqHV9dV5fg-uyidKpwT5KpmwwgmMQMA85r8HWWTcjKwV5CUZLalAlRIyU')`
+          backgroundImage: `url('https://africa.com/wp-content/uploads/2025/04/Africa-World-Map.jpg')`
         }}
       ></div>
       <div className="absolute inset-0 bg-gradient-to-r from-surface-dark via-surface-dark/90 to-transparent z-0"></div>

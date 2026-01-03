@@ -266,7 +266,7 @@ export default function Settings() {
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{
-                    backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYjT-ezQrxClQFG1MNHDrTCbca_qLyy78Fs70z8XKggEdeCQt2QgJdY4u1utP3bA4BGq8TnsMF9bERPc4VZa3jUmPRJrSkAld6eNG4H3JHEFbPxhlDP2bK8t2hqEylULFWXVqQAkndyiLb7Xjxr3xRf9VgHK2H7Qgxy4YHeb8WHcJM0qqbWHZyl28QTEi0sE1oOlrj6jQ7g--tSm6Ilgr5CnLUcEvqS-GpZDsobjs0Mw93dvy1P9qTGFwYDMndPUgOVsPhcuGJFsw")`
+                    backgroundImage: `url("https://africa.com/wp-content/uploads/2025/04/Africa-World-Map.jpg")`
                   }}
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
